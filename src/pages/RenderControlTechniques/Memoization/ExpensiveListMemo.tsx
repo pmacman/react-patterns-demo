@@ -5,11 +5,11 @@ function ExpensiveList() {
   useRenderCounter('ExpensiveListMemo');
 
   return (
-    <section>
+    <div>
       <h2>List Component</h2>
 
       <p>
-        <em>This will not re-render.</em>
+        <em>This will NOT re-render.</em>
       </p>
 
       <ul>
@@ -17,7 +17,7 @@ function ExpensiveList() {
           <li key={index}>Expensive row {index + 1}</li>
         ))}
       </ul>
-    </section>
+    </div>
   );
 }
 

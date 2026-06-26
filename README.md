@@ -21,10 +21,10 @@ Examples demonstrating techniques for reducing unnecessary component re-renders.
 
 Examples showing how common libraries simplify application development.
 
-- **React Hook Form** – Form state management and validation.
-- **Zod** – Runtime schema validation with TypeScript support.
 - **TanStack Query** – Server-state management, caching, and asynchronous data fetching.
+- **React Hook Form** – Form state management and validation.
 - **Zustand** – Lightweight client-side state management.
+- **Zod** – Runtime schema validation with TypeScript support.
 
 ## 💡 Purpose
 
@@ -43,10 +43,10 @@ Each example is intentionally small and focused on demonstrating a single concep
 - React
 - TypeScript
 - Vite
-- React Hook Form
-- Zod
 - TanStack Query
+- React Hook Form
 - Zustand
+- Zod
 
 ## 🚀 Running the Project
 

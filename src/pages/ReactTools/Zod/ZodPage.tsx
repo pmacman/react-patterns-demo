@@ -1,3 +1,4 @@
+import { InfoBox } from '@/components/MessageBox';
 import { useRenderCounter } from '@/hooks/useRenderCounter';
 import { getCountriesZod } from '@/services/mockCountryApi';
 // import { getCountries } from '@/services/mockCountryApi';
@@ -84,7 +85,13 @@ function ZodPage() {
 
   return (
     <>
-      <h1>Zod Example</h1>
+      <h1>Zod</h1>
+
+      <InfoBox>
+        <p>
+          <strong>Zod</strong> is used for runtime schema validation with TypeScript support.
+        </p>
+      </InfoBox>
 
       {isLoading && <p>Loading countries...</p>}
 

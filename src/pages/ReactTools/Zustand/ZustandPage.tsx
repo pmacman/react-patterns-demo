@@ -1,3 +1,4 @@
+import { InfoBox } from '@/components/MessageBox';
 import { useRenderCounter } from '@/hooks/useRenderCounter';
 import { useNameStore } from '@/stores/useNameStore';
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +21,13 @@ function ZustandPage() {
 
   return (
     <>
-      <h1>Zustand Example</h1>
+      <h1>Zustand</h1>
+
+      <InfoBox>
+        <p>
+          <strong>Zustand</strong> is a lightweight client-side state management.
+        </p>
+      </InfoBox>
 
       <form onSubmit={handleSubmit} className={'form-layout'}>
         <div>

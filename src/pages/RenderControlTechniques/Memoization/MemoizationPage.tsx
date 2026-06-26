@@ -10,7 +10,7 @@ function MemoizationPage() {
 
   return (
     <>
-      <h1>Memoization Example</h1>
+      <h1>Memoization</h1>
 
       <InfoBox>
         <p>

@@ -9,10 +9,10 @@ function Navigation() {
       <div className={'nav-row'}>
         <div className={'nav-title'}>Tools</div>
         <nav className={'nav-items'}>
-          <NavLink to='/'>Zod</NavLink>
-          <NavLink to='/tanstack-query'>TanStack Query</NavLink>
+          <NavLink to='/'>TanStack Query</NavLink>
           <NavLink to='/react-hook-form'>React Hook Form</NavLink>
           <NavLink to='/zustand'>Zustand</NavLink>
+          <NavLink to='/zod'>Zod</NavLink>
         </nav>
       </div>
 

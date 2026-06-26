@@ -9,7 +9,7 @@ function ComponentCompositionPage() {
 
   return (
     <>
-      <h1>Component Composition Example</h1>
+      <h1>Component Composition</h1>
 
       <InfoBox>
         <p>

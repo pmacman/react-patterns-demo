@@ -8,7 +8,7 @@ function StateIsolationPage() {
 
   return (
     <>
-      <h1>State Isolation Example</h1>
+      <h1>State Isolation</h1>
 
       <InfoBox>
         <p>

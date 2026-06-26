@@ -1,3 +1,4 @@
+import { InfoBox } from '@/components/MessageBox';
 import { useRenderCounter } from '@/hooks/useRenderCounter';
 import { getCountriesZod } from '@/services/mockCountryApi';
 import { useQuery } from '@tanstack/react-query';
@@ -59,7 +60,14 @@ function TanStackQueryPage() {
 
   return (
     <>
-      <h1>TanStack Query Example</h1>
+      <h1>TanStack Query</h1>
+
+      <InfoBox>
+        <p>
+          <strong>TanStack Query</strong> is used for server-state management, caching, and
+          asynchronous data fetching.
+        </p>
+      </InfoBox>
 
       {isLoading && <p>Loading countries...</p>}
       {isError && (

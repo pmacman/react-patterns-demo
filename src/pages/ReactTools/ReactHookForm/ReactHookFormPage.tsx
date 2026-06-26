@@ -1,3 +1,4 @@
+import { InfoBox } from '@/components/MessageBox';
 import { useRenderCounter } from '@/hooks/useRenderCounter';
 import { getCountriesZod } from '@/services/mockCountryApi';
 // import { getCountries } from '@/services/mockCountryApi';
@@ -98,7 +99,13 @@ function ZodPage() {
 
   return (
     <>
-      <h1>React Hook Form Example</h1>
+      <h1>React Hook Form</h1>
+
+      <InfoBox>
+        <p>
+          <strong>React Hook Form</strong> is used for form state management and validation.
+        </p>
+      </InfoBox>
 
       {isLoading && <p>Loading countries...</p>}
       {errorMessage && (

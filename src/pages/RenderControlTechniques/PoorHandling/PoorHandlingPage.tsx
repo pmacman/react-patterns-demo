@@ -10,7 +10,7 @@ function PoorStateHandlingPage() {
 
   return (
     <>
-      <h1>Poor Handling Example</h1>
+      <h1>Poor Handling</h1>
 
       <InfoBox>
         <p>
