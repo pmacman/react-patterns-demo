@@ -53,6 +53,7 @@ Each example is intentionally small and focused on demonstrating a single concep
 ```bash
 npm install
 npm run dev
+npm run test
 ```
 
 Then open the local development server displayed by Vite.

@@ -10,27 +10,27 @@ function ContactUs() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitted(true);
-    setSubmissionCount(submissionCount + 1);
+    setSubmissionCount((count) => count + 1);
   };
 
   return (
     <section>
       <h2>Contact Us</h2>
 
-      <form onSubmit={handleSubmit} className={'form-layout'}>
+      <form onSubmit={handleSubmit} className="form-layout" data-testid="contact-form">
         <div>
-          <label htmlFor='comments'>Enter your comments:</label>
+          <label htmlFor="comments">Enter your comments:</label>
         </div>
         <div>
-          <textarea id='comments' name='comments' defaultValue={'My comments...'} />
+          <textarea id="comments" name="comments" defaultValue="My comments..." />
         </div>
         <div>
-          <button type='submit'>Submit</button>
+          <button type="submit">Submit</button>
         </div>
       </form>
 
       {isSubmitted && (
-        <div className='form-success'>
+        <div className="form-success">
           <p>Thank you for your submission! Submission # {submissionCount}</p>
         </div>
       )}

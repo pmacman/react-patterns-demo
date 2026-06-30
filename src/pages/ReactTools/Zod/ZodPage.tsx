@@ -96,25 +96,25 @@ function ZodPage() {
       {isLoading && <p>Loading countries...</p>}
 
       {errorMessage && (
-        <p className={'alert'} role='alert'>
+        <p className="alert" role="alert">
           Error: {errorMessage}
         </p>
       )}
 
       {!isLoading && (
         <>
-          <form onSubmit={handleSubmit} className={'form-layout'}>
+          <form onSubmit={handleSubmit} className="form-layout">
             <div>
-              <label htmlFor='country'>Country:</label>
+              <label htmlFor="country">Country:</label>
             </div>
             <div>
               <select
-                id='country'
+                id="country"
                 value={selectedCountryCode}
                 onChange={handleCountryChange}
-                className={'select-list'}
+                className="select-list"
               >
-                <option value=''>Select a country</option>
+                <option value="">Select a country</option>
 
                 {countries.map((country) => (
                   <option key={country.code} value={country.code}>
@@ -127,15 +127,15 @@ function ZodPage() {
             {shouldShowProvinceDropdown && (
               <>
                 <div>
-                  <label htmlFor='province'>State/Province:</label>
+                  <label htmlFor="province">State/Province:</label>
                 </div>
                 <select
-                  id='province'
+                  id="province"
                   value={selectedProvinceCode}
                   onChange={handleProvinceChange}
-                  className={'select-list'}
+                  className="select-list"
                 >
-                  <option value=''>Select a state/province</option>
+                  <option value="">Select a state/province</option>
 
                   {provinces.map((province) => (
                     <option key={province.code} value={province.code}>
@@ -147,14 +147,14 @@ function ZodPage() {
             )}
 
             <div>
-              <button type='submit' disabled={!isFormValid}>
+              <button type="submit" disabled={!isFormValid}>
                 Submit
               </button>
             </div>
           </form>
 
           {showResults && (
-            <div className='form-layout form-success'>
+            <div className="form-layout form-success">
               <div>
                 Country: {selectedCountry?.code} {selectedCountry?.name}
               </div>

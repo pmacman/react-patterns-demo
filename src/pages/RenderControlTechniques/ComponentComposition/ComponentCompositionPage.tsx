@@ -36,11 +36,11 @@ function ComponentCompositionPage() {
 
       <h2>Expandable Sections</h2>
 
-      <ExpandableContainer>
+      <ExpandableContainer id="NewsletterSignup">
         <NewsletterSignup />
       </ExpandableContainer>
 
-      <ExpandableContainer>
+      <ExpandableContainer id="ContactUs">
         <ContactUs />
       </ExpandableContainer>
     </>

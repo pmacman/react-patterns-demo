@@ -20,27 +20,27 @@ function NewsletterSignup() {
 
     setEmail(emailAddress);
     setIsSubmitted(isValid);
-    setSubmissionCount(submissionCount + 1);
+    setSubmissionCount((count) => count + 1);
   };
 
   return (
     <section>
       <h2>Newsletter Signup</h2>
 
-      <form onSubmit={handleSubmit} className={'form-layout'}>
+      <form onSubmit={handleSubmit} className="form-layout" data-testid="newsletter-form">
         <div>
-          <label htmlFor='email'>Enter your email address to subscribe:</label>
+          <label htmlFor="email">Enter your email address to subscribe:</label>
         </div>
         <div>
-          <input id='email' name='email' type='email' defaultValue={'test@email.com'} />
+          <input id="email" name="email" type="email" defaultValue="test@email.com" />
         </div>
         <div>
-          <button type='submit'>Submit</button>
+          <button type="submit">Submit</button>
         </div>
       </form>
 
       {isSubmitted && (
-        <div className='form-success'>
+        <div className="form-success">
           <p>
             Thank you for subscribing {email}. Submission # {submissionCount}
           </p>

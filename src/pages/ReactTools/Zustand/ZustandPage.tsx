@@ -29,16 +29,16 @@ function ZustandPage() {
         </p>
       </InfoBox>
 
-      <form onSubmit={handleSubmit} className={'form-layout'}>
+      <form onSubmit={handleSubmit} className="form-layout">
         <div>
-          <label htmlFor='name'>Enter your name:</label>
+          <label htmlFor="name">Enter your name:</label>
         </div>
         <div>
-          <input id='name' name='name' type='text' onChange={(e) => setName(e.target.value)} />
+          <input id="name" name="name" type="text" onChange={(e) => setName(e.target.value)} />
         </div>
 
         <div>
-          <button type='submit'>Submit</button>
+          <button type="submit">Submit</button>
         </div>
       </form>
     </>

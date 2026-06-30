@@ -109,27 +109,27 @@ function ZodPage() {
 
       {isLoading && <p>Loading countries...</p>}
       {errorMessage && (
-        <p className={'alert'} role='alert'>
+        <p className="alert" role="alert">
           Error: {errorMessage}
         </p>
       )}
 
       {!isLoading && (
         <>
-          <form onSubmit={handleSubmit(onSubmit)} className={'form-layout'}>
+          <form onSubmit={handleSubmit(onSubmit)} className="form-layout">
             <div>
-              <label htmlFor='countryCode'>Country:</label>
+              <label htmlFor="countryCode">Country:</label>
             </div>
             <div>
               <select
-                id='countryCode'
+                id="countryCode"
                 {...register('countryCode', {
                   required: 'Country is required.',
                   onChange: () => setShowResults(false),
                 })}
-                className={'select-list'}
+                className="select-list"
               >
-                <option value=''>Select a country</option>
+                <option value="">Select a country</option>
 
                 {countries.map((country) => (
                   <option key={country.code} value={country.code}>
@@ -140,7 +140,7 @@ function ZodPage() {
             </div>
 
             {errors.countryCode && (
-              <p className={'alert'} role='alert'>
+              <p className="alert" role="alert">
                 {errors.countryCode.message}
               </p>
             )}
@@ -148,11 +148,11 @@ function ZodPage() {
             {shouldShowProvinceDropdown && (
               <>
                 <div>
-                  <label htmlFor='provinceCode'>State/Province:</label>
+                  <label htmlFor="provinceCode">State/Province:</label>
                 </div>
                 <div>
                   <select
-                    id='provinceCode'
+                    id="provinceCode"
                     {...register('provinceCode', {
                       validate: (value) => {
                         if (!shouldShowProvinceDropdown) {
@@ -163,9 +163,9 @@ function ZodPage() {
                       },
                       onChange: () => setShowResults(false),
                     })}
-                    className={'select-list'}
+                    className="select-list"
                   >
-                    <option value=''>Select a state/province</option>
+                    <option value="">Select a state/province</option>
 
                     {provinces.map((province) => (
                       <option key={province.code} value={province.code}>
@@ -175,19 +175,19 @@ function ZodPage() {
                   </select>
                 </div>
 
-                {errors.provinceCode && <p role='alert'>{errors.provinceCode.message}</p>}
+                {errors.provinceCode && <p role="alert">{errors.provinceCode.message}</p>}
               </>
             )}
 
             <div>
-              <button type='submit' disabled={!isValid}>
+              <button type="submit" disabled={!isValid}>
                 Submit
               </button>
             </div>
           </form>
 
           {showResults && (
-            <div className={'form-layout form-success'}>
+            <div className="form-layout form-success">
               <div>
                 Country: {selectedCountry?.code} {selectedCountry?.name}
               </div>

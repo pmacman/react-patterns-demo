@@ -15,7 +15,7 @@ function ZustandSummaryPage() {
         <strong>Name: {name || 'No name submitted yet'}</strong>
       </div>
 
-      <NavLink to='/zustand' className={'secondary-link'}>
+      <NavLink to="/zustand" className="secondary-link">
         Back
       </NavLink>
     </>

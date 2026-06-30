@@ -3,8 +3,8 @@ import { InfoBox } from '@/components/MessageBox';
 import { useRenderCounter } from '@/hooks/useRenderCounter';
 import { useState } from 'react';
 
-function PoorStateHandlingPage() {
-  useRenderCounter('PoorStateHandlingPage');
+function PoorHandlingPage() {
+  useRenderCounter('PoorHandlingPage');
 
   const [count, setCount] = useState(0);
 
@@ -47,4 +47,4 @@ function PoorStateHandlingPage() {
   );
 }
 
-export default PoorStateHandlingPage;
+export default PoorHandlingPage;
