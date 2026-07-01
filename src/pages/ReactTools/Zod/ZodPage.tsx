@@ -1,8 +1,7 @@
 import { InfoBox } from '@/components/MessageBox';
 import { useRenderCounter } from '@/hooks/useRenderCounter';
-import { getCountriesZod } from '@/services/mockCountryApi';
-// import { getCountries } from '@/services/mockCountryApi';
-import type { Country } from '@/types/CountrySchema';
+import { getCountries } from '@/services/mock.api';
+import type { Country } from '@/types/country.types';
 import { useEffect, useState } from 'react';
 
 function ZodPage() {
@@ -35,9 +34,7 @@ function ZodPage() {
       try {
         setIsLoading(true);
         setErrorMessage(null);
-
-        // const responseExampleWithoutZod = await getCountries(abortController.signal);
-        const response = await getCountriesZod(abortController.signal);
+        const response = await getCountries(abortController.signal);
         setCountries(response);
       } catch (error) {
         if (error instanceof DOMException && error.name === 'AbortError') {

@@ -1,62 +1,19 @@
 import { InfoBox } from '@/components/MessageBox';
 import { useRenderCounter } from '@/hooks/useRenderCounter';
-import { getCountriesZod } from '@/services/mockCountryApi';
-import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { getProductsInfinite } from '@/services/mock.api';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 function TanStackQueryPage() {
   useRenderCounter('TanStackQueryPage');
 
-  const [selectedCountryCode, setSelectedCountryCode] = useState('');
-  const [selectedProvinceCode, setSelectedProvinceCode] = useState('');
-  const [showResults, setShowResults] = useState(false);
-
-  const {
-    data: countries = [],
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ['countries'],
-    queryFn: ({ signal }) => getCountriesZod(signal),
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
+    queryKey: ['products'],
+    queryFn: ({ pageParam, signal }) => getProductsInfinite(pageParam, signal),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => (lastPage.hasNextPage ? lastPage.nextPage : undefined),
   });
 
-  const selectedCountry = countries.find((country) => country.code === selectedCountryCode) ?? null;
-
-  const selectedProvince =
-    selectedCountry?.provinces.find((province) => province.code === selectedProvinceCode) ?? null;
-
-  const provinces = selectedCountry?.provinces ?? [];
-
-  const shouldShowProvinceDropdown = provinces.length > 0;
-
-  const isCountryValid = selectedCountry !== null;
-
-  const isProvinceValid = !shouldShowProvinceDropdown || selectedProvince !== null;
-
-  const isFormValid = isCountryValid && isProvinceValid;
-
-  const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCountryCode(e.target.value);
-    setSelectedProvinceCode('');
-    setShowResults(false);
-  };
-
-  const handleProvinceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedProvinceCode(e.target.value);
-    setShowResults(false);
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!isFormValid) {
-      setShowResults(false);
-      return;
-    }
-
-    setShowResults(true);
-  };
+  const products = data?.pages.flatMap((page) => page.items) ?? [];
 
   return (
     <>
@@ -64,87 +21,44 @@ function TanStackQueryPage() {
 
       <InfoBox>
         <p>
-          <strong>TanStack Query</strong> is used for server-state management, caching, and
-          asynchronous data fetching.
+          <strong>TanStack Query</strong> simplifies asynchronous data fetching, caching, and
+          server-state management.
+        </p>
+        <p>
+          This example demonstrates the <code>useInfiniteQuery</code> hook, which loads additional
+          pages of data while preserving previously fetched results.
         </p>
       </InfoBox>
 
-      {isLoading && <p>Loading countries...</p>}
-      {isError && (
-        <p className="alert" role="alert">
-          Error: {error instanceof Error ? error.message : 'Unknown error'}
-        </p>
+      <ul className="section">
+        {products.map((product) => (
+          <li key={product.id}>
+            <strong>{product.name}</strong>
+
+            <div>{product.description}</div>
+
+            <small>
+              ${product.price} · Stock {product.stock}
+            </small>
+          </li>
+        ))}
+      </ul>
+
+      {hasNextPage && (
+        <div className="section">
+          <button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+            {isFetchingNextPage ? 'Loading...' : 'Load More'}
+          </button>
+        </div>
       )}
 
-      {!isLoading && (
-        <>
-          <form onSubmit={handleSubmit} className="form-layout">
-            <div>
-              <label htmlFor="country">Country:</label>
-            </div>
-            <div>
-              <select
-                id="country"
-                value={selectedCountryCode}
-                onChange={handleCountryChange}
-                className="select-list"
-              >
-                <option value="">Select a country</option>
-
-                {countries.map((country) => (
-                  <option key={country.code} value={country.code}>
-                    {country.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {shouldShowProvinceDropdown && (
-              <>
-                <div>
-                  <label htmlFor="province">State/Province</label>
-                </div>
-                <div>
-                  <select
-                    id="province"
-                    value={selectedProvinceCode}
-                    onChange={handleProvinceChange}
-                    className="select-list"
-                  >
-                    <option value="">Select a state/province</option>
-
-                    {provinces.map((province) => (
-                      <option key={province.code} value={province.code}>
-                        {province.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </>
-            )}
-
-            <div>
-              <button type="submit" disabled={!isFormValid}>
-                Submit
-              </button>
-            </div>
-          </form>
-
-          {showResults && (
-            <div className="form-layout form-success">
-              <div>
-                Country: {selectedCountry?.code} {selectedCountry?.name}
-              </div>
-
-              {selectedProvince && (
-                <div>
-                  Province: {selectedProvince?.code} {selectedProvince?.name}
-                </div>
-              )}
-            </div>
-          )}
-        </>
-      )}
+      <div className="alert section">
+        <hr />
+        <p>Pages: {data?.pages.length ?? 0}</p>
+        <p>Products: {products.length}</p>
+        <p>Has next page: {String(hasNextPage)}</p>
+        <p>Fetching: {String(isFetchingNextPage)}</p>
+      </div>
     </>
   );
 }

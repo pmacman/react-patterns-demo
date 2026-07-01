@@ -11,10 +11,20 @@ export const CountrySchema = z.object({
   provinces: z.array(ProvinceSchema),
 });
 
-export const CountriesResponseSchema = z.object({
-  countries: z.array(CountrySchema),
-});
-
 export type Province = z.infer<typeof ProvinceSchema>;
 export type Country = z.infer<typeof CountrySchema>;
-export type CountriesResponse = z.infer<typeof CountriesResponseSchema>;
+
+/*
+ * Alternatively, use TypeScript Interfaces instead of Zod
+ */
+
+// export interface Province {
+//   code: string;
+//   name: string;
+// }
+
+// export interface Country {
+//   code: string;
+//   name: string;
+//   provinces: Province[];
+// }
