@@ -1,23 +1,14 @@
 import { InfoBox } from '@/components/MessageBox';
 import { useRenderCounter } from '@/hooks/useRenderCounter';
-import { useNameStore } from '@/stores/useNameStore';
-import { useNavigate } from 'react-router-dom';
+import { useCounterStoreZustand } from '@/stores/useCounterStoreZustand';
 
 function ZustandPage() {
   useRenderCounter('ZustandPage');
 
-  const navigate = useNavigate();
-  const setName = useNameStore((state) => state.setName);
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const formData = new FormData(e.currentTarget);
-    const name = String(formData.get('name') ?? '').trim();
-
-    setName(name);
-    navigate('/zustand-summary');
-  };
+  const count = useCounterStoreZustand((state) => state.count);
+  const increment = useCounterStoreZustand((state) => state.increment);
+  const decrement = useCounterStoreZustand((state) => state.decrement);
+  const reset = useCounterStoreZustand((state) => state.reset);
 
   return (
     <>
@@ -25,22 +16,31 @@ function ZustandPage() {
 
       <InfoBox>
         <p>
-          <strong>Zustand</strong> is a lightweight client-side state management.
+          <strong>Zustand</strong> is used for lightweight global state management.
+        </p>
+        <p>
+          This example stores a counter outside of React component state so multiple components can
+          share and update the same value.
         </p>
       </InfoBox>
 
-      <form onSubmit={handleSubmit} className="form-layout">
-        <div>
-          <label htmlFor="name">Enter your name:</label>
-        </div>
-        <div>
-          <input id="name" name="name" type="text" onChange={(e) => setName(e.target.value)} />
-        </div>
+      <section className="form-layout" style={{ flexDirection: 'row' }}>
+        <p>
+          <strong>Count: {count}</strong>
+        </p>
 
-        <div>
-          <button type="submit">Submit</button>
-        </div>
-      </form>
+        <button type="button" onClick={decrement}>
+          Decrement
+        </button>
+
+        <button type="button" onClick={increment}>
+          Increment
+        </button>
+
+        <button type="button" onClick={reset}>
+          Reset
+        </button>
+      </section>
     </>
   );
 }

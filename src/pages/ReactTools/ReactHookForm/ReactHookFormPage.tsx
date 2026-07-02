@@ -1,98 +1,103 @@
 import { InfoBox } from '@/components/MessageBox';
 import { useRenderCounter } from '@/hooks/useRenderCounter';
-import { getCountries } from '@/services/mock.api';
-import type { Country } from '@/types/country.types';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { type FieldValues, type Path, type RegisterOptions, useForm } from 'react-hook-form';
 
-type FormValues = {
-  countryCode: string;
-  provinceCode: string;
+type ContactFormValues = {
+  fullName: string;
+  email: string;
+  age: number;
+  contactMethod: 'email' | 'phone';
+  phone: string;
+  topic: string;
+  message: string;
+  subscribe: boolean;
 };
 
-function ZodPage() {
-  useRenderCounter('ReactHookFormPage');
+// Maps each form field to its React Hook Form validation rules.
+type ValidationRules<T extends FieldValues> = Partial<{
+  [K in Path<T>]: RegisterOptions<T, K>;
+}>;
 
-  const [countries, setCountries] = useState<Country[]>([]);
-  const [showResults, setShowResults] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function ReactHookFormPage() {
+  useRenderCounter('TanStackQueryPage');
+
+  const [submittedData, setSubmittedData] = useState<ContactFormValues | null>(null);
 
   const {
     register,
     handleSubmit,
     watch,
-    setValue,
-    formState: { errors, isValid },
-  } = useForm<FormValues>({
-    mode: 'onSubmit',
-    reValidateMode: 'onChange',
+    formState: { errors },
+  } = useForm<ContactFormValues>({
     defaultValues: {
-      countryCode: '',
-      provinceCode: '',
+      fullName: '',
+      email: '',
+      age: 18,
+      contactMethod: 'email',
+      phone: '',
+      topic: '',
+      message: '',
+      subscribe: false,
     },
   });
 
-  const selectedCountryCode = watch('countryCode');
-  const selectedProvinceCode = watch('provinceCode');
+  const contactMethod = watch('contactMethod');
 
-  const selectedCountry = countries.find((country) => country.code === selectedCountryCode) ?? null;
-
-  const selectedProvince =
-    selectedCountry?.provinces.find((province) => province.code === selectedProvinceCode) ?? null;
-
-  const provinces = selectedCountry?.provinces ?? [];
-
-  const shouldShowProvinceDropdown = provinces.length > 0;
-
-  useEffect(() => {
-    const abortController = new AbortController();
-
-    const loadCountries = async () => {
-      try {
-        setIsLoading(true);
-        setErrorMessage(null);
-        const response = await getCountries(abortController.signal);
-        setCountries(response);
-      } catch (error) {
-        if (error instanceof DOMException && error.name === 'AbortError') {
-          return;
+  // Optionally extract validation rules to a separate file (e.g., contactForm.validation.ts)
+  const validationRules = {
+    fullName: {
+      required: 'Full name is required',
+    },
+    email: {
+      required: 'Email is required',
+      pattern: {
+        value: emailPattern,
+        message: 'Enter a valid email',
+      },
+    },
+    age: {
+      required: 'Age is required',
+      valueAsNumber: true,
+      min: {
+        value: 18,
+        message: 'You must be at least 18',
+      },
+      max: {
+        value: 120,
+        message: 'Enter a realistic age',
+      },
+    },
+    contactMethod: {
+      required: 'Select a preferred contact method',
+    },
+    phone: {
+      validate: (value: string) => {
+        if (contactMethod === 'phone' && value.trim().length === 0) {
+          return 'Phone number is required when phone is selected';
         }
 
-        setErrorMessage(
-          error instanceof Error ? error.message : 'Unknown error loading countries.',
-        );
-      } finally {
-        if (!abortController.signal.aborted) {
-          setIsLoading(false);
-        }
-      }
-    };
+        return true;
+      },
+    },
+    topic: {
+      required: 'Select a topic',
+    },
+    message: {
+      required: 'Message is required',
+      minLength: {
+        value: 10,
+        message: 'Message must be at least 10 characters',
+      },
+    },
+  } satisfies ValidationRules<ContactFormValues>;
 
-    loadCountries();
-
-    return () => {
-      abortController.abort();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!selectedCountryCode) {
-      return;
-    }
-
-    setValue('provinceCode', '', {
-      shouldValidate: false,
-      shouldDirty: false,
-      shouldTouch: false,
-    });
-
-    setShowResults(false);
-  }, [selectedCountryCode, setValue]);
-
-  const onSubmit = () => {
-    setShowResults(true);
-  };
+  function onSubmit(data: ContactFormValues) {
+    console.log('Submitted form data:', data);
+    setSubmittedData(data);
+  }
 
   return (
     <>
@@ -104,102 +109,94 @@ function ZodPage() {
         </p>
       </InfoBox>
 
-      {isLoading && <p>Loading countries...</p>}
-      {errorMessage && (
-        <p className="alert" role="alert">
-          Error: {errorMessage}
-        </p>
-      )}
+      <form onSubmit={handleSubmit(onSubmit)} className="form-layout">
+        <div>
+          <label htmlFor="fullName">Full Name</label>
+          <input id="fullName" type="text" {...register('fullName', validationRules.fullName)} />
+          {errors.fullName && <div className="alert">{errors.fullName.message}</div>}
+        </div>
 
-      {!isLoading && (
-        <>
-          <form onSubmit={handleSubmit(onSubmit)} className="form-layout">
+        <div>
+          <label htmlFor="email">Email</label>
+          <input id="email" type="email" {...register('email', validationRules.email)} />
+          {errors.email && <div className="alert">{errors.email.message}</div>}
+        </div>
+
+        <div>
+          <label htmlFor="age">Age</label>
+          <input id="age" type="number" {...register('age', validationRules.age)} />
+          {errors.age && <div className="alert">{errors.age.message}</div>}
+        </div>
+
+        <div>
+          <legend>Preferred Contact Method</legend>
+
+          <label>
+            <input
+              type="radio"
+              value="email"
+              {...register('contactMethod', validationRules.contactMethod)}
+            />
+            Email
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              value="phone"
+              {...register('contactMethod', validationRules.contactMethod)}
+            />
+            Phone
+          </label>
+
+          {errors.contactMethod && <div className="alert">{errors.contactMethod.message}</div>}
+
+          {contactMethod === 'phone' && (
             <div>
-              <label htmlFor="countryCode">Country:</label>
-            </div>
-            <div>
-              <select
-                id="countryCode"
-                {...register('countryCode', {
-                  required: 'Country is required.',
-                  onChange: () => setShowResults(false),
-                })}
-                className="select-list"
-              >
-                <option value="">Select a country</option>
-
-                {countries.map((country) => (
-                  <option key={country.code} value={country.code}>
-                    {country.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {errors.countryCode && (
-              <p className="alert" role="alert">
-                {errors.countryCode.message}
-              </p>
-            )}
-
-            {shouldShowProvinceDropdown && (
-              <>
-                <div>
-                  <label htmlFor="provinceCode">State/Province:</label>
-                </div>
-                <div>
-                  <select
-                    id="provinceCode"
-                    {...register('provinceCode', {
-                      validate: (value) => {
-                        if (!shouldShowProvinceDropdown) {
-                          return true;
-                        }
-
-                        return value !== '' || 'State/province is required.';
-                      },
-                      onChange: () => setShowResults(false),
-                    })}
-                    className="select-list"
-                  >
-                    <option value="">Select a state/province</option>
-
-                    {provinces.map((province) => (
-                      <option key={province.code} value={province.code}>
-                        {province.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {errors.provinceCode && <p role="alert">{errors.provinceCode.message}</p>}
-              </>
-            )}
-
-            <div>
-              <button type="submit" disabled={!isValid}>
-                Submit
-              </button>
-            </div>
-          </form>
-
-          {showResults && (
-            <div className="form-layout form-success">
-              <div>
-                Country: {selectedCountry?.code} {selectedCountry?.name}
-              </div>
-
-              {selectedProvince && (
-                <div>
-                  Province: {selectedProvince?.code} {selectedProvince?.name}
-                </div>
-              )}
+              <label htmlFor="phone">Phone Number</label>
+              <input id="phone" type="tel" {...register('phone', validationRules.phone)} />
+              {errors.phone && <div className="alert">{errors.phone.message}</div>}
             </div>
           )}
-        </>
+        </div>
+
+        <div>
+          <label htmlFor="topic">Topic</label>
+          <select id="topic" {...register('topic', validationRules.topic)}>
+            <option value="">Select a topic</option>
+            <option value="support">Support</option>
+            <option value="sales">Sales</option>
+            <option value="general">General</option>
+          </select>
+          {errors.topic && <div className="alert">{errors.topic.message}</div>}
+        </div>
+
+        <div>
+          <label htmlFor="message">Message</label>
+          <textarea id="message" {...register('message', validationRules.message)} />
+          {errors.message && <div className="alert">{errors.message.message}</div>}
+        </div>
+
+        <div>
+          <label>
+            <input type="checkbox" {...register('subscribe')} />
+            Subscribe to newsletter
+          </label>
+        </div>
+
+        <div>
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+
+      {submittedData && (
+        <section>
+          <h2>Thank you for your submission!</h2>
+          <pre>{JSON.stringify(submittedData, null, 2)}</pre>
+        </section>
       )}
     </>
   );
 }
 
-export default ZodPage;
+export default ReactHookFormPage;

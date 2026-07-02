@@ -12,7 +12,6 @@ function Navigation() {
           <NavLink to="/">TanStack Query</NavLink>
           <NavLink to="/react-hook-form">React Hook Form</NavLink>
           <NavLink to="/zustand">Zustand</NavLink>
-          <NavLink to="/zod">Zod</NavLink>
         </nav>
       </div>
 

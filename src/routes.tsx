@@ -1,9 +1,7 @@
 import NotFound from '@/pages/NotFound';
 import ReactHookFormPage from '@/pages/ReactTools/ReactHookForm/ReactHookFormPage';
 import TanStackQueryPage from '@/pages/ReactTools/TanStackQuery/TanStackQueryPage';
-import ZodPage from '@/pages/ReactTools/Zod/ZodPage';
 import ZustandPage from '@/pages/ReactTools/Zustand/ZustandPage';
-import ZustandSummaryPage from '@/pages/ReactTools/Zustand/ZustandSummaryPage';
 import ComponentCompositionPage from '@/pages/RenderControlTechniques/ComponentComposition/ComponentCompositionPage';
 import MemoizationPage from '@/pages/RenderControlTechniques/Memoization/MemoizationPage';
 import PoorHandlingPage from '@/pages/RenderControlTechniques/PoorHandling/PoorHandlingPage';
@@ -28,14 +26,6 @@ export const router = createBrowserRouter([
       {
         path: 'zustand',
         element: <ZustandPage />,
-      },
-      {
-        path: 'zod',
-        element: <ZodPage />,
-      },
-      {
-        path: 'zustand-summary',
-        element: <ZustandSummaryPage />,
       },
       {
         path: 'poor-handling',
