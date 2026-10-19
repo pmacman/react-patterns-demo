@@ -9,6 +9,7 @@
     "moduleDetection": "force",
     "jsx": "react-jsx",
     "noEmit": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
 
     /* Environment */
     "types": ["vite/client"],
