@@ -1,7 +1,13 @@
 import { InfoBox } from '@/components/MessageBox';
 import { useRenderCounter } from '@/hooks/useRenderCounter';
 import { useState } from 'react';
-import { type FieldValues, type Path, type RegisterOptions, useForm } from 'react-hook-form';
+import {
+  type FieldValues,
+  type Path,
+  type RegisterOptions,
+  type SubmitHandler,
+  useForm,
+} from 'react-hook-form';
 
 type ContactFormValues = {
   fullName: string;
@@ -94,10 +100,10 @@ function ReactHookFormPage() {
     },
   } satisfies ValidationRules<ContactFormValues>;
 
-  function onSubmit(data: ContactFormValues) {
+  const onSubmit: SubmitHandler<ContactFormValues> = (data) => {
     console.log('Submitted form data:', data);
     setSubmittedData(data);
-  }
+  };
 
   return (
     <>
@@ -109,7 +115,7 @@ function ReactHookFormPage() {
         </p>
       </InfoBox>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="form-layout">
+      <form onSubmit={(e) => void handleSubmit(onSubmit)(e)} className="form-layout">
         <div>
           <label htmlFor="fullName">Full Name</label>
           <input id="fullName" type="text" {...register('fullName', validationRules.fullName)} />

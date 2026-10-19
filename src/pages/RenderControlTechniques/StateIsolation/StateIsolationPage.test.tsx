@@ -41,7 +41,7 @@ describe('State Isolation render optimization', () => {
     expect(newsletterSection).toBeTruthy();
     expect(contactSection).toBeTruthy();
 
-    const newsletterSubmitButton = within(newsletterSection!).getByRole('button', {
+    const newsletterSubmitButton = within(newsletterSection).getByRole('button', {
       name: /submit/i,
     });
 
@@ -55,7 +55,7 @@ describe('State Isolation render optimization', () => {
     expect(renderCounts.get('NewsletterSignup')).toBe(2);
     expect(renderCounts.get('ContactUs')).toBe(1);
 
-    const contactSubmitButton = within(contactSection!).getByRole('button', {
+    const contactSubmitButton = within(contactSection).getByRole('button', {
       name: /submit/i,
     });
 

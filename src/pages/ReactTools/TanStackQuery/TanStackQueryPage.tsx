@@ -46,7 +46,7 @@ function TanStackQueryPage() {
 
       {hasNextPage && (
         <div className="section">
-          <button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+          <button onClick={() => void fetchNextPage()} disabled={isFetchingNextPage}>
             {isFetchingNextPage ? 'Loading...' : 'Load More'}
           </button>
         </div>

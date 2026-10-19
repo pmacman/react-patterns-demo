@@ -12,7 +12,8 @@ function NewsletterSignup() {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    const emailAddress = String(formData.get('email') ?? '').trim();
+    const emailAddress = (formData.get('email') as string | null)?.trim() ?? '';
+
     const isValid = emailAddress !== '';
     if (!isValid) {
       return;
