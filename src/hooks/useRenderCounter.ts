@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 /**
  * A custom React hook that tracks, increments, and logs the render count
@@ -32,20 +32,23 @@ export function useRenderCounter(componentName: string, isDebugging: boolean = t
   // Create React App compatible:
   // const globalLogEnabled = process.env.REACT_APP_ENABLE_RENDER_LOGS === 'true'
 
-  if (!isDev || !globalLogEnabled || !isDebugging) {
-    return;
-  }
+  // No dependency array: runs after every render; refs are only touched inside the effect.
+  useEffect(() => {
+    if (!isDev || !globalLogEnabled || !isDebugging) {
+      return;
+    }
 
-  renderCount.current++;
+    renderCount.current++;
 
-  // CUSTOMIZE MESSAGE HERE
-  const message = `%c[Render Trace] %c${componentName} %chas rendered. Count: %c${renderCount.current}`;
+    // CUSTOMIZE MESSAGE HERE
+    const message = `%c[Render Trace] %c${componentName} %chas rendered. Count: %c${renderCount.current}`;
 
-  // CUSTOMIZE STYLES HERE
-  const labelStyle = 'color: #70a1ff; font-weight: bold;';
-  const componentStyle = 'color: #ff4757; font-weight: bold;';
-  const normalStyle = 'color: inherit;';
-  const countStyle = 'color: #2ed573; font-weight: bold;';
+    // CUSTOMIZE STYLES HERE
+    const labelStyle = 'color: #70a1ff; font-weight: bold;';
+    const componentStyle = 'color: #ff4757; font-weight: bold;';
+    const normalStyle = 'color: inherit;';
+    const countStyle = 'color: #2ed573; font-weight: bold;';
 
-  console.log(message, labelStyle, componentStyle, normalStyle, countStyle);
+    console.log(message, labelStyle, componentStyle, normalStyle, countStyle);
+  });
 }

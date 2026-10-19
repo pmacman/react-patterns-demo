@@ -7,6 +7,7 @@ import {
   type RegisterOptions,
   type SubmitHandler,
   useForm,
+  useWatch,
 } from 'react-hook-form';
 
 type ContactFormValues = {
@@ -28,14 +29,14 @@ type ValidationRules<T extends FieldValues> = Partial<{
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function ReactHookFormPage() {
-  useRenderCounter('TanStackQueryPage');
+  useRenderCounter('ReactHookFormPage');
 
   const [submittedData, setSubmittedData] = useState<ContactFormValues | null>(null);
 
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     formState: { errors },
   } = useForm<ContactFormValues>({
     defaultValues: {
@@ -50,7 +51,7 @@ function ReactHookFormPage() {
     },
   });
 
-  const contactMethod = watch('contactMethod');
+  const contactMethod = useWatch({ control: control, name: 'contactMethod' });
 
   // Optionally extract validation rules to a separate file (e.g., contactForm.validation.ts)
   const validationRules = {
